@@ -63,7 +63,7 @@ const getAllTask = async function (req, res) {
             limit
         } = req.query;
         page = Math.max(parseInt(page) || 1, 1);
-        limit = Math.min(parseInt(limit) || 10, 100)
+        limit = Math.min(parseInt(limit) || 2, 100)
         const skip = (page - 1) * limit;
         const [tasks, totalTasks] = await Promise.all(
             [
@@ -101,7 +101,34 @@ const getAllTask = async function (req, res) {
         })
     }
 }
+
+const getSingleTask=async function (req,res){
+    try {
+        const {id}=req.params;
+        const task=await Task.findOne({
+            _id:id,
+            ownerId: req.user.userId
+        }).select(
+                "title description createdAt updatedAt"
+            )
+        if(!task){
+            return res.status(404).json({
+                success:false,
+                message: "Task not found"
+            })
+        }
+        return res.status(200).json({
+            success:true,
+            data:task
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to get task",
+            error: error.message
+        })
+    }
+}
 export {
     createTask,
-    getAllTask,
+    getAllTask,getSingleTask
 }
