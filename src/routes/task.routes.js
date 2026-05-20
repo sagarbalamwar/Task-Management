@@ -7,7 +7,7 @@ const router=Router();
 router.route("/create").post(verifyToken,createTask)
 router.route("/getAll").get(verifyToken,getAllTask)
 router.route("/getSingleTask/:id").get(verifyToken,getSingleTask)
-router.route("/updateTask/:id").put(verifyToken,updateTask)
+router.route("/updateTask/:id").patch(verifyToken,updateTask)
 export{
     router
 }

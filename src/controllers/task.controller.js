@@ -196,6 +196,16 @@ const updateTask = async function (req, res) {
         })
     }
 }
+
+const deleteTask=async function (req,res){
+    
+    const {id}=req.params;
+    const task=await Task.findByIdAndDelete({
+        _id:id,
+        ownerId:req.user.userId      
+    })
+
+}
 export {
     createTask,
     getAllTask,
